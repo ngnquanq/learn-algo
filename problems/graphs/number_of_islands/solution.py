@@ -61,6 +61,40 @@ Hint (read only if stuck):
 """
 
 
+from collections import deque
+
+
 def solution(grid: list[list[str]]) -> int:
-    # TODO: implement your solution here
-    pass
+    """Calculates the number of islands in a 2D grid using BFS.
+    
+    Time Complexity: O(M * N) where M is rows and N is columns.
+    Space Complexity: O(min(M, N)) for the BFS queue in worst case.
+    """
+    if not grid:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    island_count = 0
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == "1":
+                # Found a new island
+                island_count += 1
+                # Start sinking the island using BFS
+                queue = deque([(r, c)])
+                grid[r][c] = "0"  # Mark as visited (sink)
+
+                while queue:
+                    curr_r, curr_c = queue.popleft()
+                    
+                    # Check 4-directional neighbors
+                    for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                        nr, nc = curr_r + dr, curr_c + dc
+                        
+                        if (0 <= nr < rows and 0 <= nc < cols and 
+                                grid[nr][nc] == "1"):
+                            grid[nr][nc] = "0"  # Sink it
+                            queue.append((nr, nc))
+
+    return island_count
