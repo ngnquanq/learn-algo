@@ -33,5 +33,24 @@ Hint (read only if stuck):
 
 
 def solution(A: list[int]) -> int:
-    # TODO: implement your solution here
-    pass
+    # Initiate the values
+    lowest_price = float('inf')
+    max_profit = 0
+
+    # Check if the array is empty
+    if not A:
+        return 0
+    
+    # Check if the array has only one element
+    if len(A) == 1:
+        return 0
+
+    # Iterate through the array 
+    for price in A:
+        current_price = price 
+        if lowest_price >= current_price:
+            lowest_price = current_price
+        else:
+            max_profit = max(max_profit, current_price - lowest_price)
+    
+    return max_profit
